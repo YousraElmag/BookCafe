@@ -12,7 +12,13 @@ const FavoritesPage = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  const user = useMemo(() => JSON.parse(localStorage.getItem("user")), []);
+  const user = useMemo(() => {
+    try {
+      return JSON.parse(localStorage.getItem("user"));
+    } catch {
+      return null;
+    }
+  }, []);
 
   useEffect(() => {
     const fetchFavoriteBooks = async () => {
@@ -23,11 +29,13 @@ const FavoritesPage = () => {
       }
 
       try {
-        const userId = user.id;
         const response = await axios.get(
-          `https://bookcafe2.onrender.com/api/users/${userId}/favoriteBooks`,
+          `https://bookcafe2.onrender.com/api/users/${user.id}/favoriteBooks`
         );
-        setFavorites(response.data);
+
+        // التأكد أن البيانات مصفوفة
+        const favs = Array.isArray(response.data) ? response.data : [];
+        setFavorites(favs);
       } catch (err) {
         if (err.response && err.response.status === 404) {
           setFavorites([]);
@@ -42,25 +50,26 @@ const FavoritesPage = () => {
 
     fetchFavoriteBooks();
   }, [user]);
+
   const toggleFavorite = async (book) => {
+    if (!user) return;
     try {
       const isFavorite = favorites.some((favBook) => favBook.id === book.id);
       const userId = user.id;
+
       if (isFavorite) {
         await axios.delete(
-          `https://bookcafe2.onrender.com/api/users/${userId}/favoriteBook/${book.id}`,
+          `https://bookcafe2.onrender.com/api/users/${userId}/favoriteBook/${book.id}`
         );
         const updatedFavorites = favorites.filter(
-          (favBook) => favBook.id !== book.id,
+          (favBook) => favBook.id !== book.id
         );
         setFavorites(updatedFavorites);
         localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
       } else {
         await axios.post(
           `https://bookcafe2.onrender.com/api/users/${userId}/favoriteBook`,
-          {
-            bookId: book.id,
-          },
+          { bookId: book.id }
         );
         const updatedFavorites = [...favorites, book];
         setFavorites(updatedFavorites);
@@ -81,29 +90,28 @@ const FavoritesPage = () => {
         <FaArrowLeft />
       </button>
       <h1>Your Favorite Books</h1>
-      {error ? (
-        <p>{error}</p>
-      ) : favorites.length === 0 ? (
+
+      {error && <p className="error-message">{error}</p>}
+
+      {!error && (!Array.isArray(favorites) || favorites.length === 0) && (
         <p className="frmes">No favorite books yet 🤷‍♀️ !</p>
-      ) : (
+      )}
+
+      {!error && Array.isArray(favorites) && favorites.length > 0 && (
         <div className="favorites-grid-custom">
           {favorites.map((book) => (
             <div key={book.id} className="favorite-item-custom">
               <img
-                src={
-                  book.volumeInfo.imageLinks?.thumbnail || "/default-image.jpg"
-                }
-                alt={book.volumeInfo.title || "No Title"}
+                src={book.volumeInfo?.imageLinks?.thumbnail || "/default-image.jpg"}
+                alt={book.volumeInfo?.title || "No Title"}
                 className="favorite-thumbnail-custom"
               />
               <Link to={`/book/${book.id}`} className="favorite-title-custom">
-                {book.volumeInfo.title}
+                {book.volumeInfo?.title || "No Title"}
               </Link>
               <FaHeart
                 className={`favorite-heart-custom ${
-                  favorites.some((favBook) => favBook.id === book.id)
-                    ? "red"
-                    : ""
+                  favorites.some((favBook) => favBook.id === book.id) ? "red" : ""
                 }`}
                 onClick={() => toggleFavorite(book)}
               />
