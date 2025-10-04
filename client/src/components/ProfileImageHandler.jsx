@@ -18,7 +18,7 @@ const ProfileImageHandler = ({ name }) => {
     const fetchUserProfile = async () => {
       try {
         const response = await axios.get(
-          `${process.env.BASE_SERVER_URL}/api/profile`,
+          `https://bookcafe2.onrender.com/api/profile`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -45,7 +45,7 @@ const ProfileImageHandler = ({ name }) => {
 
     try {
       const response = await axios.post(
-        `${process.env.BASE_SERVER_URL}/api/profile/upload`,
+        `https://bookcafe2.onrender.com/api/profile/upload`,
         formData,
         {
           headers: {
