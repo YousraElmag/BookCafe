@@ -34,7 +34,7 @@ const SearchBooks = () => {
     if (!searchTerm.trim()) return;
     try {
       const response = await axios.get(
-        `${process.env.BASE_SERVER_URL}/api/books/search?query=${encodeURIComponent(searchTerm)}`,
+        `https://bookcafe2.onrender.com/api/books/search?query=${encodeURIComponent(searchTerm)}`,
       );
       setSearchResults(response.data.data || []);
     } catch (error) {
