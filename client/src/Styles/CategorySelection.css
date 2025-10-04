@@ -1,0 +1,208 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  background-size: cover;
+  background-position: center;
+  color: rgb(109, 73, 35);
+  margin: 0;
+  padding: 0;
+}
+.category-selection-container {
+  background: rgba(255, 255, 255, 0.8);
+  padding: 30px;
+  border-radius: 12px;
+  max-width: 600px;
+  margin: 100px auto;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+p {
+  border-radius: 10px;
+  background-color: #fff;
+  text-align: center;
+  font-size: 2.2rem;
+  margin-bottom: 30px;
+  color: #2e1138;
+}
+.category-list {
+  display: grid;
+  flex-wrap: wrap;
+  justify-content: center;
+  grid-template-columns: repeat(4, 200px);
+  gap: 10px;
+}
+.category-item {
+  background-color: #f1f1f1;
+  color: #38040e;
+  padding: 12px 18px;
+  margin: 8px;
+  cursor: pointer;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  transition: all 0.3s ease-in-out;
+  font-size: 1.1rem;
+  width: 200px;
+  text-align: center;
+  font-family: "Playwrite GB S";
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+.category-item:hover {
+  background-color: #2980b9;
+  color: white;
+  transform: translateY(-4px);
+}
+.category-item.selected {
+  background-color: #3498db;
+  color: #fff;
+  border-color: #2980b9;
+}
+button {
+  display: block;
+  background-color: #2ecc71;
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
+  font-size: 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition:
+    background-color 0.3s ease-in-out,
+    transform 0.2s ease-in-out;
+  margin: 20px auto 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+button:disabled {
+  background-color: #bdc3c7;
+  cursor: not-allowed;
+}
+button:hover:enabled {
+  background-color: #653a2a;
+  transform: translateY(-4px);
+}
+.error-message {
+  color: #e74c3c;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+}
+.category-title {
+  padding: 17px;
+  margin: 20px auto;
+  font-size: 40px;
+  font-family: "Pacifico", cursive;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+  text-align: center;
+
+  color: #653a2a;
+  border-radius: 10px;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.4);
+}
+.category-container {
+  width: 700px;
+  height: 700px;
+  margin: 20px auto;
+  text-align: center;
+  position: relative;
+}
+.category-container .background {
+  width: 200px;
+  position: absolute;
+  left: 30px;
+  bottom: 285px;
+  border-radius: 30px;
+  transform: translateX(-330px);
+}
+.category-container .background2 {
+  width: 200px;
+  position: absolute;
+  right: 30px;
+  bottom: 285px;
+  border-radius: 30px;
+  height: 350px;
+  transform: translateX(330px);
+}
+@media (min-width: 1600px) {
+  .category-list {
+    grid-template-columns: repeat(4, 200px);
+  }
+}
+@media (max-width: 1200px) {
+  .category-list {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .category-container .background,
+  .category-container .background2 {
+    bottom: 30px;
+  }
+}
+@media (max-width: 1144px) {
+  .category-container .background {
+    bottom: 300px;
+    transform: translateX(-230px);
+  }
+
+  .category-container .background2 {
+    bottom: 300px;
+    transform: translateX(230px);
+  }
+}
+@media (max-width: 992px) {
+  .category-list {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .category-container .background,
+  .category-container .background2 {
+    display: none;
+  }
+  .category-item {
+    font-size: 1rem;
+    padding: 10px 15px;
+  }
+
+  button {
+    font-size: 1rem;
+    padding: 10px 15px;
+  }
+}
+@media (max-width: 768px) {
+  .category-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .category-item {
+    font-size: 0.9rem;
+    padding: 8px 12px;
+  }
+
+  button {
+    font-size: 0.9rem;
+    padding: 8px 12px;
+  }
+}
+@media (max-width: 576px) {
+  .category-list {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 5px;
+  }
+
+  .category-item {
+    font-size: 0.7rem;
+    padding: 8px 10px;
+    width: 95%;
+    margin: 0 auto;
+    border-radius: 8px;
+  }
+  button {
+    font-size: 0.7rem;
+    padding: 8px 10px;
+    width: 90%;
+    margin: 10px auto;
+  }
+  .category-container {
+    width: 90% !important;
+  }
+}

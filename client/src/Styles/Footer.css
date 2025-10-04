@@ -1,0 +1,24 @@
+.footer {
+  display: flex;
+  background: #2f1409;
+  justify-content: center;
+  padding-top: 20px;
+}
+.footer p {
+  color: #fefae0;
+  font-size: 20px;
+  background: black;
+}
+.footer a {
+  padding-left: 10px;
+  color: antiquewhite;
+  text-decoration: none;
+}
+@media (max-width: 480px) {
+  .footer p {
+    font-size: 11px;
+  }
+  .footer a {
+    padding: 0;
+  }
+}

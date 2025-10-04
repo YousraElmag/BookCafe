@@ -1,0 +1,182 @@
+.land {
+  height: fit-content;
+  width: 70%;
+  display: flex;
+  justify-content: space-around;
+  padding: 100px;
+  margin-bottom: 100px;
+  margin: 20px auto;
+  background: white;
+  border-radius: 15px;
+  box-shadow:
+    0 10px 15px rgba(0, 0, 0, 0.1),
+    0 0 30px rgba(0, 0, 0, 0.2),
+    0 0 60px rgba(0, 0, 0, 0.05);
+}
+.land .one {
+  flex-basis: 40%;
+  text-align: center;
+}
+.one h3 {
+  margin: 0 0 20px;
+  color: #653a2a;
+  font-size: 29px;
+  font-family: "Playwrite GB S";
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+}
+.one h2 {
+  margin: 0 0 20px;
+  color: #653a2a;
+  font-size: 17px;
+  font-family: "Pacifico", cursive;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+  line-height: 2.2;
+}
+.two {
+  flex-basis: 40%;
+}
+.two img {
+  height: 500px;
+  width: 400px;
+}
+:root {
+  background: #d4a373;
+}
+.land2 {
+  background: #975c31;
+}
+.land2 .info {
+  text-align: center;
+  padding: 54px;
+  color: #fefae0;
+}
+.land2 .books {
+  display: grid;
+  grid-template-columns: repeat(6, 200px);
+  gap: 20px;
+  justify-content: center;
+  padding-bottom: 100px;
+}
+.land2 .books img {
+  width: 200px;
+  height: 250px;
+  transition:
+    transform 0.3s ease,
+    padding 0.3s ease;
+}
+.land2 .books img:hover {
+  transform: scale(1.1);
+  padding: 5px;
+}
+.land2 .info h3 {
+  margin: 0 0 20px;
+  font-size: 29px;
+  font-family: "Playwrite GB S", cursive;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+}
+.land2 h4 {
+  font-family: "Playwrite GB S", cursive;
+  font-weight: 800;
+  font-size: 23px;
+}
+.Explor {
+  background: #1f1414;
+  color: #fefae0;
+  position: relative;
+  padding: 15px 30px;
+  font-size: 18px;
+  font-family: revert-layer;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+a .gr {
+  background: #d56e6e;
+  position: absolute;
+  width: 153px;
+  height: 51px;
+  left: -64px;
+  top: -16px;
+}
+.land a {
+  position: relative;
+  text-decoration: none;
+}
+@media (max-width: 480px) {
+  .land {
+    width: 350px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .one h2 {
+    line-height: 0%;
+    line-height: 1.4;
+    font-family: math;
+  }
+  .two img {
+    width: 200px;
+    height: 200px;
+  }
+  .land2 {
+    width: 350px;
+
+    margin: 20px auto;
+  }
+  .land2 .info h3 {
+    font-size: 16px;
+  }
+  .land2 .info h4 {
+    font-size: 13px;
+  }
+  .land2 .books {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    margin: 20px auto;
+    width: 350px;
+    justify-content: center;
+  }
+  .land2 .books img {
+    width: 100px;
+    height: 100px;
+  }
+}
+@media (min-width: 481px) and (max-width: 768px) {
+  .land {
+    width: 600px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .one h2 {
+    line-height: 1.4;
+    font-family: math;
+    font-size: 24px;
+  }
+  .two img {
+    width: 250px;
+    height: 250px;
+  }
+  .land2 {
+    width: 600px;
+    margin: 30px auto;
+  }
+  .land2 .info h3 {
+    font-size: 20px;
+  }
+  .land2 .info h4 {
+    font-size: 15px;
+  }
+  .land2 .books {
+    grid-template-columns: repeat(3, 150px);
+    width: 600px;
+    margin: 30px auto;
+  }
+  .land2 .books img {
+    width: 150px;
+    height: 150px;
+  }
+}

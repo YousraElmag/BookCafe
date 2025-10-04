@@ -1,0 +1,326 @@
+.bc-navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 10px 20px;
+  background-color: rgb(252, 240, 226);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.bc-navbar-logo {
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+  text-decoration: none !important;
+}
+.bc-navbar-logo img {
+  height: 70px;
+  width: auto;
+  margin-right: 10px;
+  text-decoration: none !important;
+}
+.bc-navbar-logo h1 {
+  display: flex !important;
+  align-items: center !important;
+  color: rgb(169, 123, 73);
+  font-size: 16px !important;
+  margin: 0 !important;
+  padding-top: 5px !important;
+  text-decoration: none !important;
+}
+.bc-navbar-right {
+  display: flex !important;
+  align-items: center !important;
+}
+.bc-navbar-left {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+}
+.bc-navbar-links {
+  list-style: none !important;
+  display: flex !important;
+  gap: 20px !important;
+}
+.bc-navbar-links li {
+  display: flex;
+  align-items: center;
+  margin: 0 5px;
+}
+.navbar-links li .faHome,
+.navbar-links li .faList,
+.navbar-links li .faStar,
+.profile-tooltip {
+  font-size: 20px;
+  color: rgb(169, 123, 73);
+}
+.bc-navbar-links a {
+  text-decoration: none;
+  color: rgb(169, 123, 73);
+  font-size: 18px;
+  display: flex !important;
+  align-items: center;
+  position: relative;
+  justify-content: center;
+  flex-direction: column;
+}
+.bc-navbar-links a span {
+  position: absolute;
+  top: 27px;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  white-space: nowrap;
+  z-index: 10;
+}
+.bc-navbar-links a:hover span {
+  opacity: 1;
+}
+.bc-navbar-search {
+  position: relative;
+}
+.bc-navbar-search input {
+  padding: 10px 60px 10px 20px;
+  border-radius: 20px;
+  border: 1px solid rgb(169, 123, 73);
+  width: 600px;
+  background-color: rgb(252, 240, 226);
+  text-align: left;
+  margin-top: 3%;
+  position: relative;
+}
+.navbar-search input:focus {
+  outline: none;
+  border-color: rgb(169, 123, 73);
+}
+.navbar-search input::placeholder {
+  color: rgb(169, 123, 73);
+  opacity: 1;
+}
+.bc-navbar-search .search-icon {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgb(98, 58, 17);
+  pointer-events: none;
+}
+.fancy-button {
+  background-color: rgb(223, 140, 45);
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-right: 10px;
+}
+.fancy-button:hover {
+  background-color: rgb(169, 123, 73);
+}
+.profile-container {
+  display: flex;
+  align-items: center;
+}
+.profile-image-container {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: inline-block;
+  cursor: pointer;
+  margin-right: 40px;
+}
+.profile-image-container:hover .profile-tooltip {
+  opacity: 1;
+  visibility: visible;
+}
+.dropdown-menu {
+  position: absolute;
+  top: 80px;
+  right: 0;
+  background-color: rgb(223, 140, 45);
+  color: white;
+  min-width: 160px;
+  z-index: 1;
+  border-radius: 25px;
+  padding: 5px 0;
+  margin-top: 30px;
+}
+.profile-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid rgb(169, 123, 73);
+}
+.profile-tooltip {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 14px;
+  color: rgb(169, 123, 73);
+  padding: 8px 12px;
+  border-radius: 5px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.3s ease,
+    visibility 0.3s ease;
+  z-index: 1;
+}
+.profile-image-container:hover .profile-tooltip {
+  opacity: 1;
+  visibility: visible;
+}
+.dropdown-menu {
+  position: absolute;
+  top: 80px;
+  right: 0;
+  background-color: rgb(223, 140, 45);
+  color: white;
+  min-width: 160px;
+  z-index: 1;
+  border-radius: 25px;
+  padding: 5px 0;
+  margin-top: 30px;
+}
+.dropdown-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.dropdown-menu li {
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.dropdown-menu li:hover {
+  background-color: rgb(216, 136, 45);
+  border-radius: 20px;
+}
+.navbar-links .welcome {
+  font-family: "Playwrite GB S";
+  color: currentColor;
+}
+@media (min-width: 2133px) {
+  .bc-navbar-search input {
+    padding: 10px 60px 10px 20px;
+    border-radius: 20px;
+    border: 1px solid rgb(169, 123, 73);
+    width: 800px;
+    background-color: rgb(252, 240, 226);
+    margin-top: 3%;
+  }
+  .bc-navbar-links li .faHome,
+  .bc-navbar-links li .faList,
+  .bc-navbar-links li .faStar {
+    font-size: 35px;
+  }
+  .bc-navbar-links li {
+    font-size: 18px;
+  }
+  .profile-tooltip {
+    top: 8%;
+    left: 95.9%;
+  }
+}
+@media (max-width: 1422px) {
+  .bc-navbar-search input {
+    width: 600px;
+  }
+  .search-icon {
+    left: 93%;
+    top: 50%;
+  }
+  .bc-navbar-links li {
+    font-size: 14px;
+  }
+  .profile-tooltip {
+    top: 6%;
+    left: 94.6%;
+  }
+}
+@media (max-width: 993px) {
+  .bc-navbar {
+    flex-direction: column;
+    align-items: center;
+  }
+  .bc-navbar-search {
+    margin-top: 10px;
+    order: 2;
+  }
+  .profile-tooltip {
+    display: none;
+  }
+  .bc-navbar-links li {
+    font-size: 14px;
+  }
+}
+@media (max-width: 744px) {
+  .bc-navbar {
+    flex-direction: column;
+    padding: 10px;
+  }
+  .bc-navbar-logo img {
+    height: 45px;
+  }
+  .bc-navbar-search input {
+    width: 90%;
+  }
+  .fancy-button {
+    font-size: 12px;
+    width: 70%;
+  }
+}
+@media (max-width: 480px) {
+  .bc-navbar {
+    flex-direction: column;
+    padding: 10px;
+  }
+  .bc-navbar-logo img {
+    height: 40px;
+  }
+  .bc-navbar-search input {
+    width: 94%;
+  }
+  .search-icon {
+    left: 85%;
+  }
+  .fancy-button {
+    width: 80%;
+  }
+  .bc-navbar-links a span {
+    font-size: 12px;
+    margin-top: -9px;
+  }
+  .bc-navbar-auth {
+    gap: 10px;
+  }
+}
+.bc-navbar-links li {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  cursor: pointer;
+}
+.bc-navbar-links li span {
+  margin-left: 8px;
+  font-size: 14px;
+}
+.profile-icon {
+  font-size: 3rem;
+  color: #975c31;
+}
+.bc-navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+.welcome {
+  margin-right: 15px;
+}
