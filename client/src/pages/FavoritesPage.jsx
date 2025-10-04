@@ -48,7 +48,7 @@ const FavoritesPage = () => {
       const userId = user.id;
       if (isFavorite) {
         await axios.delete(
-          `${process.env.BASE_SERVER_URL}/api/users/${userId}/favoriteBook/${book.id}`,
+          `https://bookcafe2.onrender.com/api/users/${userId}/favoriteBook/${book.id}`,
         );
         const updatedFavorites = favorites.filter(
           (favBook) => favBook.id !== book.id,
@@ -57,7 +57,7 @@ const FavoritesPage = () => {
         localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
       } else {
         await axios.post(
-          `${process.env.BASE_SERVER_URL}/api/users/${userId}/favoriteBook`,
+          `https://bookcafe2.onrender.com/api/users/${userId}/favoriteBook`,
           {
             bookId: book.id,
           },
