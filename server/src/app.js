@@ -20,7 +20,7 @@ const app = express();
 // Middleware
 app.use(
   cors({
-    origin: "https://bookcafe2.netlify.app",
+    origin: "*",
     credentials: true,
   }),
 );
