@@ -23,7 +23,7 @@ const AuthForm = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        `http://localhost:5000/api/user/login`,
+        `https://bookcafe2.onrender.com/api/user/login`,
         { email, password },
       );
       if (response.data) {
@@ -47,7 +47,7 @@ const AuthForm = () => {
     }
     try {
       const { data } = await axios.post(
-        `http://localhost:5000/api/user/register`,
+        `https://bookcafe2.onrender.com/api/user/register`,
         { name, email, password, confirmPassword },
       );
       if (data) {

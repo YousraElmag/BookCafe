@@ -25,7 +25,7 @@ const FavoritesPage = () => {
       try {
         const userId = user.id;
         const response = await axios.get(
-          `http://localhost:5000/api/users/${userId}/favoriteBooks`,
+          `https://bookcafe2.onrender.com/api/users/${userId}/favoriteBooks`,
         );
         setFavorites(response.data);
       } catch (err) {

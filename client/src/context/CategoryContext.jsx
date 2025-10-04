@@ -15,7 +15,7 @@ export const CategoryProvider = ({ children }) => {
         const token = localStorage.getItem("token");
         try {
           const response = await axios.get(
-            `http://localhost:5000/api/users/${user.id}/preferences`,
+            `https://bookcafe2.onrender.com/api/users/${user.id}/preferences`,
             {
               headers: { Authorization: `Bearer ${token}` },
             },

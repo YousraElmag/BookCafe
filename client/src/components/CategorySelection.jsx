@@ -57,7 +57,7 @@ const CategoryAndPreferences = () => {
 
     try {
       const preferencesResponse = await axios.put(
-        `http://localhost:5000/api/user/${user.id}`,
+        `https://bookcafe2.onrender.com/api/user/${user.id}`,
         {
           preferences: selectedCategories,
         },

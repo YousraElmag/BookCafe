@@ -63,7 +63,7 @@ const BookRecommendationPage = () => {
 
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/user/${user.id}/preferences`,
+        `https://bookcafe2.onrender.com/api/user/${user.id}/preferences`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -100,7 +100,7 @@ const BookRecommendationPage = () => {
         };
 
         return axios
-          .get(`http://localhost:5000/api/recommendedBooks`, {
+          .get(`https://bookcafe2.onrender.com/api/recommendedBooks`, {
             params: {
               preference,
               startIndex: getRandomNumber(),
@@ -145,7 +145,7 @@ const BookRecommendationPage = () => {
 
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/user/${user.id}/favoriteAuthors`,
+        `https://bookcafe2.onrender.com/api/user/${user.id}/favoriteAuthors`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -188,7 +188,7 @@ const BookRecommendationPage = () => {
 
     try {
       const response = await axios.put(
-        `http://localhost:5000/api/user/${user.id}/favoriteAuthors`,
+        `https://bookcafe2.onrender.com/api/user/${user.id}/favoriteAuthors`,
         { author },
         {
           headers: {
@@ -228,7 +228,7 @@ const BookRecommendationPage = () => {
       }
 
       const response = await axios.post(
-        `http://localhost:5000/api/user/${user.id}/favoriteBook`,
+        `https://bookcafe2.onrender.com/api/user/${user.id}/favoriteBook`,
         { bookId: book.id },
         {
           headers: {

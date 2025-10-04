@@ -18,7 +18,7 @@ const BookDetailComponent = () => {
     const fetchBook = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/book/detail/${id}`,
+          `https://bookcafe2.onrender.com/api/book/detail/${id}`,
         );
         setBook(response.data);
       } catch (error) {
@@ -40,7 +40,7 @@ const BookDetailComponent = () => {
 
     try {
       await axios.post(
-        `http://localhost:5000/api/users/${user.id}/favoriteBook`,
+        `https://bookcafe2.onrender.com/api/users/${user.id}/favoriteBook`,
         { bookId: book.id },
         {
           headers: {
