@@ -59,14 +59,8 @@ export const getBooksByFavoriteAuthors = async (req, res) => {
         const books = response.data?.items || [];
 
         return books.filter(
-          (book) =>
-            book?.id &&
-            book?.volumeInfo &&
-            Array.isArray(book.volumeInfo.authors) &&
-            book.volumeInfo.authors.some((name) =>
-              name.toLowerCase().includes(author.toLowerCase())
-            )
-        );
+  (book) => book?.id && book?.volumeInfo
+);
       })
     );
 
