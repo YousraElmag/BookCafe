@@ -62,13 +62,7 @@ const BookRecommendationPage = () => {
     }
 
     try {
-      console.log("NEW FAVORITES CODE", {
-  bookId: book.id,
-  bookDetails: {
-    id: book.id,
-    volumeInfo: book.volumeInfo,
-  },
-});
+    
       const response = await axios.get(
         `https://bookcafe2.onrender.com/api/user/${user.id}/preferences`,
         {
