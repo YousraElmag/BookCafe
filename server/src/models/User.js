@@ -11,6 +11,22 @@ const userSchema = new mongoose.Schema({
   firstLogin: { type: Boolean, default: true },
   favoriteAuthors: { type: [String], default: [] },
   favoriteBook: { type: [String], default: [] },
+  favoriteBookDetails: {
+  type: [
+    {
+      _id: false,
+      id: { type: String, required: true },
+      volumeInfo: {
+        title: { type: String, default: "" },
+        authors: { type: [String], default: [] },
+        imageLinks: {
+          thumbnail: { type: String, default: "" },
+        },
+      },
+    },
+  ],
+  default: [],
+},
   profileImage: { type: String, default: " " },
 });
 

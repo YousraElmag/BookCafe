@@ -29,32 +29,59 @@ const BookDetailComponent = () => {
 
     fetchBook();
   }, [id]);
-  const handleFavoriteSubmit = async (book) => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    const token = localStorage.getItem("token");
+const handleFavoriteSubmit = async () => {
+  let user;
 
-    if (!user || !token) {
-      setError("User not authenticated. Please log in.");
-      return;
-    }
+  try {
+    user = JSON.parse(localStorage.getItem("user"));
+  } catch {
+    user = null;
+  }
 
-    try {
-      await axios.post(
-        `https://bookcafe2.onrender.com/api/users/${user.id}/favoriteBook`,
-        { bookId: book.id },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        },
+  if (!user?.id) {
+    alert("Please log in first.");
+    return;
+  }
+
+  const isAlreadyFavorite = favorites.some(
+    (favBook) => favBook.id === id
+  );
+
+  try {
+    if (isAlreadyFavorite) {
+      await axios.delete(
+        `https://bookcafe2.onrender.com/api/user/${user.id}/favoriteBook/${id}`
       );
-      console.log("Book saved to favorites");
-    } catch (err) {
-      console.error("Failed to save favorite book:", err.message);
-      setError("Failed to save favorite book.");
+    } else {
+      await axios.post(
+        `https://bookcafe2.onrender.com/api/user/${user.id}/favoriteBook`,
+        {
+          bookId: id,
+          bookDetails: {
+            id,
+            volumeInfo: {
+              title: book.volumeInfo?.title || "",
+              authors: book.volumeInfo?.authors || [],
+              imageLinks: {
+                thumbnail:
+                  book.volumeInfo?.imageLinks?.thumbnail || "",
+              },
+            },
+          },
+        }
+      );
     }
-  };
+
+    // Update the heart only after the server request succeeds
+    toggleFavorite({
+      id,
+      volumeInfo: book.volumeInfo,
+    });
+  } catch (err) {
+    console.error("Failed to update favorite:", err);
+    alert("Failed to update favorite book.");
+  }
+};
 
   if (error) return <div>Error loading the book details.</div>;
   if (!book) return <div>Loading...</div>;
@@ -136,10 +163,7 @@ const BookDetailComponent = () => {
           </div>
           <button
             className="heart-icon-bdc"
-            onClick={() => {
-              toggleFavorite({ id, ...book.volumeInfo });
-              handleFavoriteSubmit(book);
-            }}
+          onClick={handleFavoriteSubmit}
             style={{ color: isFavorite ? "red" : "white" }}
             aria-label={
               isFavorite ? "Remove from favorites" : "Add to favorites"

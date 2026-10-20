@@ -1,3 +1,4 @@
+
 import { logInfo, logError } from "../util/logging.js";
 import axios from "axios";
 import User from "../models/User.js";
@@ -7,24 +8,38 @@ export const getBooksByFavoriteAuthors = async (req, res) => {
   try {
     const userId = req.params.id;
 
-    // Fetch the user from the database
+    // Find the user in MongoDB
     const user = await User.findById(userId);
+
     if (!user) {
-      return res.status(404).json({ message: "User not found." });
+      return res.status(404).json({
+        message: "User not found.",
+      });
     }
 
-    const favoriteAuthors = user.favoriteAuthors; // Get the user's favorite authors
+    const favoriteAuthors = user.favoriteAuthors || [];
 
+    // Return an empty array if there are no favorite authors
     if (favoriteAuthors.length === 0) {
-      return res.status(200).json({ message: "No favorite authors found." });
+      return res.status(200).json([]);
     }
 
     logInfo("User's favorite authors:", favoriteAuthors);
 
-    // Get Google Books API key from environment variables
+    // Get Google Books API key from Render environment
+    const googleBooksApiKey = process.env.API_KEY;
+
+    if (!googleBooksApiKey) {
+      logError("Google Books API key is missing.");
+
+      return res.status(500).json({
+        error: "Google Books API key is not configured.",
+      });
+    }
+
     const books = [];
 
-    // Loop through the favorite authors and fetch books for each
+    // Fetch books for each favorite author
     for (const author of favoriteAuthors) {
       try {
         logInfo("Fetching books for author:", author);
@@ -33,39 +48,58 @@ export const getBooksByFavoriteAuthors = async (req, res) => {
           "https://www.googleapis.com/books/v1/volumes",
           {
             params: {
-              q: `inauthor:${author}`,
+              q: `inauthor:"${author}"`,
               maxResults: 6,
+              key: googleBooksApiKey,
             },
-          },
+            timeout: 10000,
+          }
         );
 
-        if (response.data.items) {
-          books.push(...response.data.items); // Add the books to the array
+        const authorBooks = response.data?.items || [];
+
+        if (Array.isArray(authorBooks)) {
+          books.push(...authorBooks);
         }
       } catch (error) {
-        logError(`Error fetching books for author ${author}:`, error.message);
+        // Show the real Google API error without exposing the API key
+        console.error("Google Books request failed:", {
+          author,
+          status: error.response?.status,
+          message:
+            error.response?.data?.error?.message ||
+            error.message,
+        });
       }
     }
 
-    // Check if books were found
+    // Return an empty array if no books were found
     if (books.length === 0) {
-      return res
-        .status(200)
-        .json({ message: "No books found for the favorite authors." });
+      return res.status(200).json([]);
     }
 
-    // Shuffle the books array
-    const shuffledBooks = books.sort(() => 0.5 - Math.random());
+    // Remove duplicate books
+    const uniqueBooks = Array.from(
+      new Map(books.map((book) => [book.id, book])).values()
+    );
 
-    // Select the first 5 random books
+    // Shuffle the books
+    const shuffledBooks = [...uniqueBooks].sort(
+      () => Math.random() - 0.5
+    );
+
+    // Return up to 6 books
     const randomBooks = shuffledBooks.slice(0, 6);
 
-    // Return the random books fetched from the API
-    res.status(200).json(randomBooks);
+    return res.status(200).json(randomBooks);
   } catch (error) {
-    logError("Error in getBooksByFavoriteAuthors:", error.message);
-    res
-      .status(500)
-      .json({ error: "Error fetching books by favorite authors." });
+    logError(
+      "Error in getBooksByFavoriteAuthors:",
+      error.message
+    );
+
+    return res.status(500).json({
+      error: "Error fetching books by favorite authors.",
+    });
   }
 };

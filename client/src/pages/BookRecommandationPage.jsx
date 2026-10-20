@@ -206,46 +206,67 @@ const BookRecommendationPage = () => {
     }
   };
 
-  const handleFavoriteSubmit = async (book) => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    const token = localStorage.getItem("token");
+ 
+const handleFavoriteSubmit = async (book) => {
+  let user;
 
-    if (!user || !token) {
-      setError("User not authenticated. Please log in.");
-      return;
-    }
+  try {
+    user = JSON.parse(localStorage.getItem("user"));
+  } catch {
+    user = null;
+  }
 
-    try {
-      const author =
-        book.volumeInfo.authors && book.volumeInfo.authors.length > 0
-          ? book.volumeInfo.authors[0]
-          : null;
+  if (!user?.id) {
+    alert("Please log in first.");
+    return;
+  }
+
+  const isAlreadyFavorite = favorites.some(
+    (favBook) => favBook.id === book.id
+  );
+
+  try {
+    if (isAlreadyFavorite) {
+      await axios.delete(
+        `https://bookcafe2.onrender.com/api/user/${user.id}/favoriteBook/${book.id}`
+      );
+    } else {
+      await axios.post(
+        `https://bookcafe2.onrender.com/api/user/${user.id}/favoriteBook`,
+        {
+          bookId: book.id,
+          bookDetails: {
+            id: book.id,
+            volumeInfo: {
+              title: book.volumeInfo?.title || "",
+              authors: book.volumeInfo?.authors || [],
+              imageLinks: {
+                thumbnail:
+                  book.volumeInfo?.imageLinks?.thumbnail || "",
+              },
+            },
+          },
+        }
+      );
+
+      const author = book.volumeInfo?.authors?.[0];
 
       if (author) {
-        handleSaveAuthor(author);
-      } else {
-        console.warn("No authors found for the book:", book);
+        await handleSaveAuthor(author);
       }
-
-      const response = await axios.post(
-        `https://bookcafe2.onrender.com/api/user/${user.id}/favoriteBook`,
-        { bookId: book.id },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
-      console.log("Book saved to favorites:", response.data);
-    } catch (err) {
-      console.error(
-        "Failed to save favorite book:",
-        err.response ? err.response.data : err.message,
-      );
-      setError("Failed to save favorite book.");
     }
-  };
+
+    // Update React only after the API succeeds
+    toggleFavorite({
+      id: book.id,
+      volumeInfo: book.volumeInfo,
+    });
+  } catch (err) {
+    console.error("Failed to update favorite:", err);
+    alert("Failed to update favorite book.");
+  }
+};
+
 
   if (loading && page === 1) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
@@ -266,15 +287,7 @@ const BookRecommendationPage = () => {
                   <p className="authorname">{book.volumeInfo.authors[0]}</p>
                   <button
                     className="heart-icon"
-                    onClick={() => {
-                      toggleFavorite({
-                        id: book.id,
-                        title: book.volumeInfo.title,
-                        imageLinks: book.volumeInfo.imageLinks,
-                        description: book.volumeInfo.description,
-                      });
-                      handleFavoriteSubmit(book);
-                    }}
+                  onClick={() => handleFavoriteSubmit(book)}
                     style={{ color: isFavorite ? "red" : "white" }}
                   >
                     ♥
@@ -321,15 +334,7 @@ const BookRecommendationPage = () => {
                   <div key={book.id} className="book-item">
                     <button
                       className="heart-icon"
-                      onClick={() => {
-                        toggleFavorite({
-                          id: book.id,
-                          title: book.volumeInfo.title,
-                          imageLinks: book.volumeInfo.imageLinks,
-                          description: book.volumeInfo.description,
-                        });
-                        handleFavoriteSubmit(book);
-                      }}
+                   onClick={() => handleFavoriteSubmit(book)}
                       style={{ color: isFavorite ? "red" : "white" }}
                     >
                       ♥
