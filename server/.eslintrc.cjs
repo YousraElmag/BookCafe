@@ -20,7 +20,7 @@ module.exports = {
   },
   rules: {
     // prettier does double quotes so make that the default
-    quotes: ["error", "double"],
+    quotes: ["error", "double", { avoidEscape: true }],
     // block any code that is not formatted according to prettier formatting rules
     "prettier/prettier": "error",
     // turned off the rule to make everything a default export
