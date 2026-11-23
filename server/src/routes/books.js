@@ -1,69 +1,52 @@
 import express from "express";
-import { createBook, getAllBooks } from "../controllers/bookController.js";
 import axios from "axios";
-import fs from "fs";
+import { createBook, getAllBooks } from "../controllers/bookController.js";
+import { buildGoogleBooksQuery } from "../util/buildGoogleBooksQuery.js";
+import { logError } from "../util/logging.js";
+
+const GOOGLE_BOOKS_URL = "https://www.googleapis.com/books/v1/volumes";
 
 const bookRouter = express.Router();
-
-// Import dotenv to read environment variables
-import dotenv from "dotenv";
-dotenv.config();
 
 bookRouter.post("/create", createBook);
 bookRouter.get("/", getAllBooks);
 
-const logToFile = (message) => {
-  if (process.env.NODE_ENV !== "production") {
-    const logMessage = `${new Date().toISOString()} - ${message}\n`;
-    fs.appendFileSync("debug.log", logMessage);
-  }
-};
-
 bookRouter.get("/search", async (req, res) => {
-  const { query } = req.query;
+  const searchQuery = buildGoogleBooksQuery(req.query.query);
 
-  logToFile(`Search Query parameter: ${query}`);
-
-  if (!query) {
-    logToFile("Error: Query parameter is missing.");
+  // Also rejects whitespace-only input and repeated ?query= params (arrays)
+  if (!searchQuery) {
     return res
       .status(400)
       .json({ success: false, error: "Query parameter is required." });
   }
 
-  // Format search query for Google Books API
-  let searchQuery = query
-    .toLowerCase()
-    .split(" ")
-    .map((term) => {
-      if (term.startsWith("author:")) return `inauthor:${term.slice(7)}`;
-      if (term.startsWith("category:")) return `subject:${term.slice(9)}`;
-      return term;
-    })
-    .join(" ");
-
-  logToFile(`Formatted Search Query: ${searchQuery}`);
-
   try {
-    const response = await axios.get(
-      `https://www.googleapis.com/books/v1/volumes?q=${searchQuery}`,
-    );
+    // Passing `params` lets axios URL-encode the query, so characters
+    // like &, # and + reach Google correctly.
+    const response = await axios.get(GOOGLE_BOOKS_URL, {
+      params: { q: searchQuery, key: process.env.API_KEY },
+      timeout: 12000,
+    });
 
-    logToFile(`API Response: ${JSON.stringify(response.data)}`);
-
-    if (response.data && response.data.items) {
-      res.json({ success: true, data: response.data.items });
-    } else {
-      res.status(404).json({ success: false, error: "No books found." });
+    const items = response.data?.items;
+    if (!items || items.length === 0) {
+      return res.status(404).json({ success: false, error: "No books found." });
     }
+
+    res.json({ success: true, data: items });
   } catch (error) {
-    logToFile(
-      `Error fetching data from Google Books API: ${error.response?.data || error.message}`,
+    // Log only the status and message: error.config contains the API key
+    logError(
+      `Google Books search failed (status ${error.response?.status ?? "none"}): ${error.message}`,
     );
-    res.status(500).json({
+
+    const isRateLimited = error.response?.status === 429;
+    res.status(isRateLimited ? 429 : 502).json({
       success: false,
-      error: "Failed to fetch data from Google Books API.",
-      details: error.response?.data || error.message,
+      error: isRateLimited
+        ? "Too many searches right now. Please try again in a minute."
+        : "Failed to fetch data from Google Books API.",
     });
   }
 });
